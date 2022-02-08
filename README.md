@@ -1,6 +1,8 @@
 # Better Results
 
-Better results 
+Shows better results when you're done with the song.
+
+This is my first beat saber mod, and I would like some tips on what I could do better :)
 
 ## Credits
 
