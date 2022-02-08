@@ -134,6 +134,7 @@ MAKE_HOOK_MATCH(ResultsViewController_Restart, &ResultsViewController::RestartBu
 
     UnityEngine::GameObject::Destroy(combo->get_gameObject());
     UnityEngine::GameObject::Destroy(avg->get_gameObject());
+    UnityEngine::GameObject::Destroy(scoreTextPercentage->get_gameObject());
 
     ResultsViewController_Restart(self);
 
@@ -143,6 +144,7 @@ MAKE_HOOK_MATCH(ResultsViewController_Continue, &ResultsViewController::Continue
 
     UnityEngine::GameObject::Destroy(combo->get_gameObject());
     UnityEngine::GameObject::Destroy(avg->get_gameObject());
+    UnityEngine::GameObject::Destroy(scoreTextPercentage->get_gameObject());
 
     ResultsViewController_Continue(self);
 
