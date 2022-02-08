@@ -125,7 +125,7 @@ MAKE_HOOK_MATCH(
     avg->set_text(il2cpp_utils::newcsstr<il2cpp_utils::CreationType::Manual>(averageCut));
     scoreTextPercentage->set_text(il2cpp_utils::newcsstr<il2cpp_utils::CreationType::Manual>(string_format("<color=#D3D3D3><size=4>%.2f percent</size></color>", std::round(percentage))));
 
-    BeatSaberUI::AddHoverHint(avg->get_gameObject(), string_format("Good - %d / Bad - %d", result->dyn_goodCutsCount(), result->dyn_badCutsCount()));
+    BeatSaberUI::AddHoverHint(avg->get_gameObject(), string_format("Good - %d / Bad - %d / Misses - %d", result->dyn_goodCutsCount(), result->dyn_badCutsCount(), result->dyn_missedCount()));
 
     ResultsViewController_Init(self, result, beatmap, practice, newHighScore);
 }
