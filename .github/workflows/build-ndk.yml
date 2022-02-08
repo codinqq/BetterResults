@@ -1,9 +1,9 @@
 name: NDK build
 
 env:
-  module_id: beatensongs
-  qmodName: beatensongs
-  cache-name: beatensongs_cache
+  module_id: betterresults
+  qmodName: BetterResults
+  cache-name: betterresults_cache
 
 on:
   push:
