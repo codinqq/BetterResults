@@ -40,35 +40,10 @@ Logger &getLogger()
     return *logger;
 }
 
-static double calculatePercentage(int maxScore, int resultScore)
+static double calculatePercentage(float maxScore, float resultScore)
 {
     double resultPercentage = (double)(100 / (double)maxScore * (double)resultScore);
     return resultPercentage;
-}
-
-static int calculateMaxScore(int blockCount)
-{
-    int maxScore;
-    if (blockCount < 14)
-    {
-        if (blockCount == 1)
-        {
-            maxScore = 115;
-        }
-        else if (blockCount < 5)
-        {
-            maxScore = (blockCount - 1) * 230 + 115;
-        }
-        else
-        {
-            maxScore = (blockCount - 5) * 460 + 1035;
-        }
-    }
-    else
-    {
-        maxScore = (blockCount - 13) * 920 + 4715;
-    }
-    return maxScore;
 }
 
 TMPro::TextMeshProUGUI *title = nullptr;
@@ -91,18 +66,24 @@ MAKE_HOOK_MATCH(
     void,
     ResultsViewController *self,
     LevelCompletionResults *result,
+    IReadonlyBeatmapData *beatmapData,
     IDifficultyBeatmap *beatmap,
     bool practice,
     bool newHighScore)
 {
 
+    
+    double percentage = calculatePercentage(::ScoreModel->ComputeMaxMultipliedScoreForBeatmap(beatmapData), result->dyn_modifiedScore());
 
-    double percentage = calculatePercentage(calculateMaxScore(beatmap->get_beatmapData()->get_cuttableNotesCount()), result->dyn_modifiedScore());
+    std::string averageCut = string_format(
+    "<align=\"center\"><color=#D3D3D3><size=4>Average Cut</size></color>\n<color=#00AFF1><size=13>%d</size></color></align>", 
+    float(result->dyn_averageCutScoreForNotesWithFullScoreScoringType()));
 
-    std::string averageCut = string_format("<align=\"center\"><color=#D3D3D3><size=4>Average Cut</size></color>\n<color=#00AFF1><size=13>%d</size></color></align>", result->dyn_averageCutScore());
-    std::string maxCombo = string_format("<align=\"center\"><color=#D3D3D3><size=4>Max Combo</size></color>\n<color=#00AFF1><size=13>%d</size></color></align>", result->dyn_maxCombo());
+    std::string maxCombo = string_format(
+    "<align=\"center\"><color=#D3D3D3><size=4>Max Combo</size></color>\n<color=#00AFF1><size=13>%d</size></color></align>", 
+    result->dyn_maxCombo());
 
-    TMPro::TextMeshProUGUI scoretext = self->dyn__scoreText();
+    TMPro::TextMeshProUGUI *scoretext = self->dyn__scoreText();
     UnityEngine::Vector2 scoreTextVector = UnityEngine::Vector2(0, -10);
 
     if (title == nullptr || score == nullptr || combo == nullptr || avg == nullptr || scoreTextPercentage == nullptr)
@@ -111,13 +92,11 @@ MAKE_HOOK_MATCH(
         UnityEngine::Transform *trans = self->dyn__clearedPanel()->get_transform();
         UnityEngine::UI::HorizontalLayoutGroup *layout = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(trans);
 
-
         combo = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "", true, vectormaxcombo);
         avg = QuestUI::BeatSaberUI::CreateText(layout->get_transform(), "", true, vectoraverage);
 
         scoreTextPercentage = QuestUI::BeatSaberUI::CreateText(self->dyn__scoreText()->get_transform(), "", true, vectorpercentage);
         scoreTextPercentage->set_alignment(TMPro::TextAlignmentOptions::Center);
-
         
     }
 
@@ -127,7 +106,7 @@ MAKE_HOOK_MATCH(
 
     BeatSaberUI::AddHoverHint(avg->get_gameObject(), string_format("Good - %d / Bad - %d / Misses - %d", result->dyn_goodCutsCount(), result->dyn_badCutsCount(), result->dyn_missedCount()));
 
-    ResultsViewController_Init(self, result, beatmap, practice, newHighScore);
+    ResultsViewController_Init(self, result, beatmapData, beatmap, practice, newHighScore);
 }
 
 MAKE_HOOK_MATCH(ResultsViewController_Restart, &ResultsViewController::RestartButtonPressed, void, ResultsViewController *self) {
