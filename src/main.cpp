@@ -26,6 +26,8 @@ using namespace UnityEngine;
 
 #include "ModConfig.hpp"
 
+#include "UI/SettingsMenu.hpp"
+
 
 #include <string>
 #include <iostream>
@@ -176,32 +178,10 @@ MAKE_HOOK_MATCH(ResultsViewController_Continue, &ResultsViewController::Continue
     ResultsViewController_Continue(self);
 }
 
-void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
-    if(firstActivation){
-    
-        UnityEngine::GameObject* container = BeatSaberUI::CreateScrollableSettingsContainer(self->get_transform());
-        
-        Color titleColor = getModConfig().titleColor.GetValue();
-        auto titleObjColorSelector = AddConfigValueColorPickerModal(container->get_transform(), getModConfig().titleColor);
-        QuestUI::BeatSaberUI::CreateUIButton(container->get_transform(), "Title Color", [=] {
-            titleObjColorSelector->Show();
-        });
-
-        Color valueColor = getModConfig().valueColor.GetValue();
-        auto valueObjColorSelector = AddConfigValueColorPickerModal(container->get_transform(), getModConfig().valueColor);
-
-
-        QuestUI::BeatSaberUI::CreateUIButton(container->get_transform(), "Value Color", [=] {
-            valueObjColorSelector->Show();
-        });
-
-    }
-}
-
 // Called at the early stages of game loading
 extern "C" void setup(ModInfo &info)
 {
-    info.id = "betterresults";
+    info.id = ID;
     info.version = VERSION;
     modInfo = info;
 
@@ -218,14 +198,18 @@ extern "C" void load()
     LoggerContextObject logger = getLogger().WithContext("load");
 
     QuestUI::Init();
-    QuestUI::Register::RegisterMainMenuModSettingsViewController(modInfo, DidActivate);
-    getLogger().info("Successfully added a button to the Settings UI in the Main Menu!");
 
     getLogger().info("Installing hooks...");
-
     INSTALL_HOOK(logger, ResultsViewController_Init);
     INSTALL_HOOK(logger, ResultsViewController_Restart);
     INSTALL_HOOK(logger, ResultsViewController_Continue);
-
     getLogger().info("Installed all hooks!");
+
+    getLogger().info("Registering custom types...");
+    custom_types::Register::AutoRegister();
+    getLogger().info("Registered custom types!");
+
+    QuestUI::Register::RegisterMainMenuModSettingsViewController<BetterResults::UI::Settings::SettingsMenu*>(modInfo);
+    getLogger().info("Successfully added a button to the Settings UI in the Main Menu!");
+
 }
