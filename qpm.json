@@ -2,10 +2,10 @@
   "sharedDir": "shared",
   "dependenciesDir": "extern",
   "info": {
-    "name": "Better Results",
-    "id": "betterresults",
+    "name": "BetterResults",
+    "id": "BetterResults",
     "version": "0.1.0",
-    "url": null,
+    "url": "https://github.com/Codinqq/BetterResults",
     "additionalData": {
       "overrideSoName": "libbetterresults.so"
     }
@@ -17,23 +17,28 @@
       "additionalData": {}
     },
     {
-      "id": "codegen",
-      "versionRange": "^0.21.0",
-      "additionalData": {}
-    },
-    {
       "id": "beatsaber-hook",
       "versionRange": "^3.7.4",
       "additionalData": {}
     },
     {
-      "id": "custom-types",
-      "versionRange": "^0.15.8",
+      "id": "codegen",
+      "versionRange": "^0.22.0",
       "additionalData": {}
     },
     {
       "id": "questui",
-      "versionRange": "^0.13.4",
+      "versionRange": "^0.13.5",
+      "additionalData": {}
+    },
+    {
+      "id": "custom-types",
+      "versionRange": "^0.15.9",
+      "additionalData": {}
+    },
+    {
+      "id": "config-utils",
+      "versionRange": "^0.7.2",
       "additionalData": {}
     }
   ],
