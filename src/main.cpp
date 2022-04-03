@@ -1,13 +1,5 @@
 #include "main.hpp"
 
-#include "ModConfig.hpp"
-
-#include <string>
-#include <iostream>
-#include <sstream>
-
-#include <UI/SettingsMenu.hpp>
-
 #include "beatsaber-hook/shared/utils/hooking.hpp"
 
 #include "GlobalNamespace/ResultsViewController.hpp"
@@ -32,6 +24,12 @@ using namespace QuestUI::BeatSaberUI;
 #include "UnityEngine/GameObject.hpp"
 using namespace UnityEngine;
 
+#include "ModConfig.hpp"
+
+
+#include <string>
+#include <iostream>
+#include <sstream>
 
 
 // <--------
@@ -73,6 +71,17 @@ std::string to_hex_string(uint8_t red, uint8_t green, uint8_t blue) {
     return oss.str();
 }
 
+// joinked from rxzz0 (https://github.com/rxzz0/CustomMissText/blob/main/src/UI/Custom/ConfigValueColorPickerModal.hpp) as it was the only one that worked, and I didn't want to make one myself :)
+inline ::QuestUI::ModalColorPicker* AddConfigValueColorPickerModal(UnityEngine::Transform* parent, ConfigUtils::ConfigValue<::UnityEngine::Color>& configValue) {
+    auto object = ::QuestUI::BeatSaberUI::CreateColorPickerModal(parent, configValue.GetName(), configValue.GetValue(), nullptr, nullptr, [&configValue](::UnityEngine::Color value) {
+            configValue.SetValue(value);
+        }
+    );
+    if(!configValue.GetHoverHint().empty())
+        ::QuestUI::BeatSaberUI::AddHoverHint(object, configValue.GetHoverHint());
+    return object;
+}
+
 TMPro::TextMeshProUGUI *averageCutText = nullptr;
 TMPro::TextMeshProUGUI *goodCutsText = nullptr;
 TMPro::TextMeshProUGUI *badCutsText = nullptr;
@@ -103,6 +112,7 @@ MAKE_HOOK_MATCH(
 
     UnityEngine::UI::HorizontalLayoutGroup *avgGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertLayout->get_transform());
     UnityEngine::UI::HorizontalLayoutGroup *cutsGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertLayout->get_transform());
+
     cutsGroup->set_spacing(10);
 
     UnityEngine::UI::HorizontalLayoutGroup *percentGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertLayout->get_transform());
@@ -147,11 +157,13 @@ MAKE_HOOK_MATCH(
     missedCutsText = QuestUI::BeatSaberUI::CreateText(cutsGroup->get_transform(), il2cpp_utils::newcsstr<il2cpp_utils::CreationType::Manual>(missedCuts), true);
     missedCutsText->set_alignment(TMPro::TextAlignmentOptions::Center);
 
+    
     scoreTextPercentage = QuestUI::BeatSaberUI::CreateText(percentGroup->get_transform(), il2cpp_utils::newcsstr<il2cpp_utils::CreationType::Manual>(scorePercentage), true);
     scoreTextPercentage->set_alignment(TMPro::TextAlignmentOptions::Center);
 
     ResultsViewController_Init(self, result, beatMapData, beatmap, practice, newHighScore);
 }
+
 
 // Destroy the container when restart or continue has been clicked.
 MAKE_HOOK_MATCH(ResultsViewController_Restart, &ResultsViewController::RestartButtonPressed, void, ResultsViewController *self) {
@@ -164,17 +176,36 @@ MAKE_HOOK_MATCH(ResultsViewController_Continue, &ResultsViewController::Continue
     ResultsViewController_Continue(self);
 }
 
+void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
+    if(firstActivation){
+    
+        UnityEngine::GameObject* container = BeatSaberUI::CreateScrollableSettingsContainer(self->get_transform());
+        
+        Color titleColor = getModConfig().titleColor.GetValue();
+        auto titleObjColorSelector = AddConfigValueColorPickerModal(container->get_transform(), getModConfig().titleColor);
+        QuestUI::BeatSaberUI::CreateUIButton(container->get_transform(), "Title Color", [=] {
+            titleObjColorSelector->Show();
+        });
+
+        Color valueColor = getModConfig().valueColor.GetValue();
+        auto valueObjColorSelector = AddConfigValueColorPickerModal(container->get_transform(), getModConfig().valueColor);
+
+
+        QuestUI::BeatSaberUI::CreateUIButton(container->get_transform(), "Value Color", [=] {
+            valueObjColorSelector->Show();
+        });
+
+    }
+}
+
 // Called at the early stages of game loading
 extern "C" void setup(ModInfo &info)
 {
-    info.id = ID;
+    info.id = "betterresults";
     info.version = VERSION;
     modInfo = info;
 
     getConfig().Load(); // Load the config file
-    getModConfig().Init(modInfo);
-    getConfig().Reload();
-    getConfig().Write();
     getLogger().info("Completed setup!");
 }
 
@@ -182,10 +213,13 @@ extern "C" void setup(ModInfo &info)
 extern "C" void load()
 {
     il2cpp_functions::Init();
+    getModConfig().Init(modInfo);
 
     LoggerContextObject logger = getLogger().WithContext("load");
 
     QuestUI::Init();
+    QuestUI::Register::RegisterMainMenuModSettingsViewController(modInfo, DidActivate);
+    getLogger().info("Successfully added a button to the Settings UI in the Main Menu!");
 
     getLogger().info("Installing hooks...");
 
@@ -194,12 +228,4 @@ extern "C" void load()
     INSTALL_HOOK(logger, ResultsViewController_Continue);
 
     getLogger().info("Installed all hooks!");
-
-    getLogger().info("Registering Custom Types...");
-    custom_types::Register::AutoRegister();
-    getLogger().info("Registered Custom Types!");
-
-    QuestUI::Register::RegisterMainMenuModSettingsViewController<BetterResults::UI::Settings::SettingsMenu*>(modInfo);
-    getLogger().info("Successfully added a button to the Settings UI in the Main Menu!");
-
 }
