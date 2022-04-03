@@ -10,3 +10,4 @@ This is my first beat saber mod, and I would like some tips on what I could do b
 * [raftario](https://github.com/raftario)
 * [Lauriethefish](https://github.com/Lauriethefish), [danrouse](https://github.com/danrouse) and [Bobby Shmurner](https://github.com/BobbyShmurner) for [this template](https://github.com/Lauriethefish/quest-mod-template)
 * [Wiresboy_exe](https://github.com/wiresboy-exe/) - For having such a nice and useful [wiki](https://docs.phazed.xyz/beatsaber-modding/home), and a nice [browser](https://modtools.phazed.xyz/browser) which I've been using 99% of the time lmao.
+* [Cal117](https://github.com/cal117) - For having a nice and useful [wiki](https://bsqmg.cal117.me/#/)!

@@ -53,12 +53,14 @@ Logger &getLogger()
     return *logger;
 }
 
+//ez percentage calculation
 static double calculatePercentage(float maxScore, float resultScore)
 {
     double resultPercentage = (100 * ((double) resultScore / (double) maxScore));
     return resultPercentage;
 }
 
+// This was a hell to find.
 std::string to_hex_string(uint8_t red, uint8_t green, uint8_t blue) {
     // r, g, b -> "#RRGGBB"
     std::ostringstream oss;
@@ -69,6 +71,7 @@ std::string to_hex_string(uint8_t red, uint8_t green, uint8_t blue) {
     return oss.str();
 }
 
+// joinked from rxzz0 (https://github.com/rxzz0/CustomMissText/blob/main/src/UI/Custom/ConfigValueColorPickerModal.hpp) as it was the only one that worked, and I didn't want to make one myself :)
 inline ::QuestUI::ModalColorPicker* AddConfigValueColorPickerModal(UnityEngine::Transform* parent, ConfigUtils::ConfigValue<::UnityEngine::Color>& configValue) {
     auto object = ::QuestUI::BeatSaberUI::CreateColorPickerModal(parent, configValue.GetName(), configValue.GetValue(), nullptr, nullptr, [&configValue](::UnityEngine::Color value) {
             configValue.SetValue(value);
@@ -81,7 +84,6 @@ inline ::QuestUI::ModalColorPicker* AddConfigValueColorPickerModal(UnityEngine::
 
 TMPro::TextMeshProUGUI *averageCutText = nullptr;
 TMPro::TextMeshProUGUI *goodCutsText = nullptr;
-
 TMPro::TextMeshProUGUI *badCutsText = nullptr;
 TMPro::TextMeshProUGUI *missedCutsText = nullptr;
 
@@ -193,10 +195,6 @@ void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToH
             valueObjColorSelector->Show();
         });
 
-
-
-    } else{
-        // If not first time activated
     }
 }
 
@@ -206,7 +204,6 @@ extern "C" void setup(ModInfo &info)
     info.id = "betterresults";
     info.version = VERSION;
     modInfo = info;
-
 
     getConfig().Load(); // Load the config file
     getLogger().info("Completed setup!");
