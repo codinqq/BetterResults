@@ -56,7 +56,7 @@ Logger &getLogger()
 //ez percentage calculation
 static double calculatePercentage(float maxScore, float resultScore)
 {
-    double resultPercentage = (100 * ((double) resultScore / (double) maxScore));
+    double resultPercentage = (resultScore * 100 ) / maxScore; 
     return resultPercentage;
 }
 
