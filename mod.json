@@ -1,5 +1,5 @@
 {
-  "_QPVersion": "0.1.2",
+  "_QPVersion": "0.1.1",
   "name": "BetterResults",
   "id": "BetterResults",
   "author": "Codinq",
@@ -7,6 +7,7 @@
   "packageId": "com.beatgames.beatsaber",
   "packageVersion": "1.21.0",
   "description": "BetterResults - Get simple but useful information after a song!",
+  "coverImage": "cover.png",
   "dependencies": [
     {
       "version": "^0.15.9",
