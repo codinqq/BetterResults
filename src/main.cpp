@@ -107,17 +107,16 @@ MAKE_HOOK_MATCH(
     container = QuestUI::BeatSaberUI::CreateFloatingScreen(Vector2(64,128), Vector3(-2.5, 0, 3), Vector3(0,-48,0), 0.0F, true, false, 2);
 
     UnityEngine::UI::GridLayoutGroup *layout = QuestUI::BeatSaberUI::CreateGridLayoutGroup(container->get_transform());
-    layout->set_spacing(Vector2(20,20));
-    layout->set_cellSize(Vector2(64,64));
-
     UnityEngine::UI::VerticalLayoutGroup *vertLayout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(layout->get_transform());
-
     UnityEngine::UI::HorizontalLayoutGroup *avgGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertLayout->get_transform());
     UnityEngine::UI::HorizontalLayoutGroup *cutsGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertLayout->get_transform());
+    UnityEngine::UI::HorizontalLayoutGroup *percentGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertLayout->get_transform());
+    
 
+    layout->set_spacing(Vector2(20,20));
+    layout->set_cellSize(Vector2(64,64));
     cutsGroup->set_spacing(10);
 
-    UnityEngine::UI::HorizontalLayoutGroup *percentGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertLayout->get_transform());
 
     double percentage = calculatePercentage(ScoreModel::ComputeMaxMultipliedScoreForBeatmap(beatMapData), result->dyn_modifiedScore());
 
@@ -127,25 +126,15 @@ MAKE_HOOK_MATCH(
     std::string colorTitle = to_hex_string(titleColor.r*255, titleColor.g*255, titleColor.b*255);
     std::string colorValue = to_hex_string(valueColor.r*255, valueColor.g*255, valueColor.b*255);
 
-    std::string averageCut = string_format(
-    "<color=%s><size=4>Average Cuts</size></color>\n<color=%s><size=8>%.2f</size></color>", 
-    colorTitle.c_str(), colorValue.c_str(), result->dyn_averageCutScoreForNotesWithFullScoreScoringType());
+    std::string averageCut = string_format("<color=%s><size=4>Average Cuts</size></color>\n<color=%s><size=8>%.2f</size></color>", colorTitle.c_str(), colorValue.c_str(), result->dyn_averageCutScoreForNotesWithFullScoreScoringType());
 
-    std::string goodCuts = string_format(
-    "<color=%s><size=4>Good Cuts</size></color>\n<color=%s><size=8>%d</size></color>", 
-    colorTitle.c_str(), colorValue.c_str(), result->dyn_goodCutsCount());
+    std::string goodCuts = string_format("<color=%s><size=4>Good Cuts</size></color>\n<color=%s><size=8>%d</size></color>", colorTitle.c_str(), colorValue.c_str(), result->dyn_goodCutsCount());
 
-    std::string badCuts = string_format(
-    "<color=%s><size=4>Bad Cuts</size></color>\n<color=%s><size=8>%d</size></color>", 
-    colorTitle.c_str(), colorValue.c_str(), result->dyn_badCutsCount());
+    std::string badCuts = string_format("<color=%s><size=4>Bad Cuts</size></color>\n<color=%s><size=8>%d</size></color>", colorTitle.c_str(), colorValue.c_str(), result->dyn_badCutsCount());
 
-    std::string missedCuts = string_format(
-    "<color=%s><size=4>Missed Cuts</size></color>\n<color=%s><size=8>%d</size></color>", 
-    colorTitle.c_str(), colorValue.c_str(), result->dyn_missedCount());
+    std::string missedCuts = string_format("<color=%s><size=4>Missed Cuts</size></color>\n<color=%s><size=8>%d</size></color>", colorTitle.c_str(), colorValue.c_str(), result->dyn_missedCount());
 
-    std::string scorePercentage = string_format(
-    "<color=%s><size=4>Percentage</size></color>\n<color=%s><size=8>%.2f</size></color>", 
-    colorTitle.c_str(), colorValue.c_str(), percentage);
+    std::string scorePercentage = string_format("<color=%s><size=4>Percentage</size></color>\n<color=%s><size=8>%.2f</size></color>", colorTitle.c_str(), colorValue.c_str(), percentage);
 
     averageCutText = QuestUI::BeatSaberUI::CreateText(avgGroup->get_transform(), il2cpp_utils::newcsstr<il2cpp_utils::CreationType::Manual>(averageCut), true);
     averageCutText->set_alignment(TMPro::TextAlignmentOptions::Center);
@@ -158,7 +147,6 @@ MAKE_HOOK_MATCH(
 
     missedCutsText = QuestUI::BeatSaberUI::CreateText(cutsGroup->get_transform(), il2cpp_utils::newcsstr<il2cpp_utils::CreationType::Manual>(missedCuts), true);
     missedCutsText->set_alignment(TMPro::TextAlignmentOptions::Center);
-
     
     scoreTextPercentage = QuestUI::BeatSaberUI::CreateText(percentGroup->get_transform(), il2cpp_utils::newcsstr<il2cpp_utils::CreationType::Manual>(scorePercentage), true);
     scoreTextPercentage->set_alignment(TMPro::TextAlignmentOptions::Center);
