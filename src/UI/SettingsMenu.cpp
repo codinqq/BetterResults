@@ -41,11 +41,10 @@ void BetterResults::UI::Settings::SettingsMenu::DidActivate(bool firstActivation
 
         Color valueColor = getModConfig().valueColor.GetValue();
         auto valueObjColorSelector = AddConfigValueColorPickerModal(container->get_transform(), getModConfig().valueColor);
-
-
         QuestUI::BeatSaberUI::CreateUIButton(container->get_transform(), "Value Color", [=] {
             valueObjColorSelector->Show();
         });
+
 
     }
 
