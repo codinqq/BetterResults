@@ -12,8 +12,6 @@
 
 using namespace GlobalNamespace;
 
-#include "questui/shared/CustomTypes/Components/ExternalComponents.hpp"
-#include "questui/shared/CustomTypes/Components/Backgroundable.hpp"
 #include "questui/shared/QuestUI.hpp"
 
 using namespace QuestUI;
