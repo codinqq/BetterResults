@@ -1,0 +1,36 @@
+{
+  "_QPVersion": "0.1.1",
+  "name": "BetterResults",
+  "id": "betterresults",
+  "author": "Codinq",
+  "version": "0.2.0",
+  "packageId": "com.beatgames.beatsaber",
+  "packageVersion": "1.24.0",
+  "description": "BetterResults - Get simple but useful information after a song!",
+  "coverImage": "cover.png",
+  "dependencies": [
+    {
+      "version": "^0.15.18",
+      "id": "custom-types",
+      "downloadIfMissing": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.18/CustomTypes.qmod"
+    },
+    {
+      "version": "^0.25.0",
+      "id": "codegen",
+      "downloadIfMissing": "https://github.com/sc2ad/BeatSaber-Quest-Codegen/releases/download/v0.25.0/Codegen.qmod"
+    },
+    {
+      "version": "^0.16.4",
+      "id": "questui",
+      "downloadIfMissing": "https://github.com/darknight1050/QuestUI/releases/download/v0.16.4/QuestUI.qmod"
+    }
+  ],
+  "modFiles": [
+    "libbetterresults.so"
+  ],
+  "libraryFiles": [
+    "libbeatsaber-hook_3_10_0.so"
+  ],
+  "fileCopies": [],
+  "copyExtensions": []
+}
