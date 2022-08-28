@@ -121,5 +121,8 @@
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "git.ignoreLimitWarning": true,
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ]
 }

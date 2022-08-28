@@ -116,10 +116,10 @@ MAKE_HOOK_MATCH(
     GameObject *rankTextObject = self->rankText->get_gameObject();
 
     // Screen with more infomation
-    resultsContainer = QuestUI::BeatSaberUI::CreateFloatingScreen(Vector2(64,128), Vector3(2,0,4), Vector3(0,48,0), 0.0F, true, false, 2);
+    resultsContainer = QuestUI::BeatSaberUI::CreateFloatingScreen(Vector2(64,64), Vector3(2,0,4), Vector3(0,48,0), 0.0F, true, false, 2);
 
     UnityEngine::UI::GridLayoutGroup *layout = QuestUI::BeatSaberUI::CreateGridLayoutGroup(resultsContainer->get_transform());
-    layout->set_spacing(Vector2(10,10));
+    layout->set_spacing(Vector2(20,20));
     layout->set_cellSize(Vector2(32,64));
 
     UnityEngine::UI::VerticalLayoutGroup *vertlayout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(layout->get_transform());
