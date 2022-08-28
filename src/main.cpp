@@ -119,14 +119,12 @@ MAKE_HOOK_MATCH(
     resultsContainer = QuestUI::BeatSaberUI::CreateFloatingScreen(Vector2(64,128), Vector3(2,0,4), Vector3(0,48,0), 0.0F, true, false, 2);
 
     UnityEngine::UI::GridLayoutGroup *layout = QuestUI::BeatSaberUI::CreateGridLayoutGroup(resultsContainer->get_transform());
-    layout->set_spacing(Vector2(20,20));
+    layout->set_spacing(Vector2(10,10));
     layout->set_cellSize(Vector2(32,64));
 
     UnityEngine::UI::VerticalLayoutGroup *vertlayout = QuestUI::BeatSaberUI::CreateVerticalLayoutGroup(layout->get_transform());
     UnityEngine::UI::HorizontalLayoutGroup *cutsGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertlayout->get_transform());
     UnityEngine::UI::HorizontalLayoutGroup *movementGroup = QuestUI::BeatSaberUI::CreateHorizontalLayoutGroup(vertlayout->get_transform());
-
-    
 
     movementGroup->set_spacing(10);
     cutsGroup->set_spacing(10);
@@ -181,11 +179,13 @@ extern "C" void load()
     QuestUI::Init();
 
     getLogger().info("Installing hooks...");
+
     INSTALL_HOOK(logger, ResultsViewController_Init);
     INSTALL_HOOK(logger, SaberSwingRatingFinished);
 
     INSTALL_HOOK(logger, ResultsViewController_Restart);
     INSTALL_HOOK(logger, ResultsViewController_Continue);
+
     getLogger().info("Installed all hooks!");
 
 }
